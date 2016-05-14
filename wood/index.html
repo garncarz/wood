@@ -1,0 +1,486 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="css/animate.css"/>
+    <script src="js/jquery-2.1.0.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/blocs.js"></script>
+    <link rel='stylesheet' href='css/et-line.min.css'/>
+    <link rel='stylesheet' href='css/font-awesome.min.css'/>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+
+    <title>WOOD &amp; Company Coding Challenge 2016</title>
+    <meta property="og:title" content="WOOD &amp; Company Coding Challenge 2016" />
+    <meta property="og:description" content="Baví Tě řešit složité problémy? Naprogramuj simulátor akciové burzy a utkej se o prize pool 100.000 Kč" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://codingchallenge.wood.cz" />
+    <meta property="og:image" content="http://codingchallenge.wood.cz/img/og3.png" />
+</head>
+<body>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-77022020-1', 'auto');
+ga('send', 'pageview');
+</script>
+
+<!-- Main container -->
+<div class="page-container">
+
+
+    <!-- Navigation -->
+    <div class="bloc bgc-carmine-pink d-bloc" id="nav-bloc">
+        <div class="container">
+            <nav class="navbar row">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="">WOOD &amp; Company Coding Challenge</a>
+                    <button id="nav-toggle" type="button" class="ui-navbar-toggle navbar-toggle" data-toggle="collapse" data-target=".navbar-1">
+                        <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse navbar-1">
+                    <ul class="site-navigation nav navbar-nav">
+                        <li><a onclick="scrollToTarget('#jak-soutezit')">Jak soutěžit</a></li>
+                        <li><a onclick="scrollToTarget('#vyhry')">Výhry</a></li>
+                        <li><a onclick="scrollToTarget('#zadani')">Zadání</a></li>
+                        <li><a onclick="scrollToTarget('#quant')">Quantitative trading tým</a></li>
+                        <li><a onclick="scrollToTarget('#pravidla')">Pravidla</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+
+
+    <!-- header -->
+    <div class="bloc bgc-outer-space bg-city-overlay d-bloc" id="header">
+        <div class="container bloc-xl">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="text-center mg-lg tc-white">Baví Tě řešit složité problémy? Naprogramuj simulátor akciové burzy a&nbsp;utkej se o prize pool 100.000 Kč</h3>
+
+                    <p class="text-center mg-lg animated fadeInUp animDelay02">
+                        WOOD &amp; Company Financial Services, a.s.*, přední obchodník s cennými papíry, vyhlašuje soutěž pro schopné programátory.
+                        Tématem soutěže je implementace aplikačního serveru, který simuluje typickou akciovou burzu.
+                    </p>
+
+                    <div class="text-center">
+                        <a class="btn btn-xl btn-wire wire-btn-carmine-pink animDelay04 animated fadeInUp"
+                           onclick="scrollToTarget('#jak-soutezit')">PŘIHLAŠ SE</a>
+                    </div>
+
+                    <div class="text-right">
+                        *dále jen “WOOD &amp; Company“
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- jak soutezit -->
+    <div class="bloc l-bloc bgc-white" id="jak-soutezit">
+        <div class="container bloc-lg">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2 class="text-center mg-md">Jak soutěžit?</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="text-center">
+                        <span class="et-icon-lightbulb icon-xl icon-carmine-pink"></span>
+                    </div>
+                    <h3 class="text-center mg-md ">1. Přihlaš se a pusť se do toho <br>&nbsp;</h3>
+                    <p class="text-center">
+                        <a onclick="ga('send', 'event', 'Application form', 'click')" href="https://docs.google.com/forms/d/12y71qrjjM2bSJLBJbHAWbF1P0EwhTfX6VEmqqOUBQWw/viewform" target="_blank">Vyplň přihlášku zde</a>
+                        a začni programovat co nejlepší řešení <a href="#zadani">soutěžního projektu</a>.
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-center">
+                        <span class="et-icon-calendar icon-xl icon-carmine-pink"></span>
+                    </div>
+                    <h3 class="text-center mg-md ">2. Pošli svůj zdrojový kód v&nbsp;Pythonu, případně C++ či&nbsp;C, do <strong>12. června 2016</strong></h3>
+                    <p class="text-center">
+                        Pošli kód a dokumentaci na <a href="mailto:codingchallenge@wood.cz">codingchallenge@wood.cz</a>.
+                        Nezapomeň připojit i čestné prohlášení, že soutěžní projekt je Tvým vlastním dílem a není v konfliktu s autorským zákonem
+                        (<a href="cestne-prohlaseni.html" target="_blank" onclick="ga('send', 'event', 'Statement sample', 'click')">vzor</a>).
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-center">
+                        <span class="et-icon-presentation icon-xl icon-carmine-pink"></span>
+                    </div>
+                    <h3 class="text-center mg-md ">3. Postup do finále</h3>
+                    <p class="text-center">
+                        Nejlepších 6 soutěžících postoupí do finálového kola, kde svůj soutěžní projekt a jeho řešení odprezentují porotě WOOD &amp; Company.
+                    </p>
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-center">
+                        <span class="et-icon-trophy icon-xl icon-carmine-pink"></span>
+                    </div>
+                    <h3 class="text-center mg-md ">4. Vyhraj</h3>
+                    <p class="text-center">
+                        Porota WOOD &amp; Company určí závěrečné pořadí a rozdělí výhry.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- vyhry -->
+    <div class="bloc bgc-platinum l-bloc" id="vyhry">
+        <div class="container bloc-sm">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h2 class="mg-md">Výhry</h2>
+                    <p class="sub-heading">Nejlepší řešitelé si rozdělí 100.000,- Kč.</p>
+
+                    <div class="prizes">
+                        <p>1. místo: 40.000,- Kč</p>
+                        <p>2. místo: 25.000,- Kč</p>
+                        <p>3. místo: 15.000,- Kč</p>
+                        <p>4. místo: 10.000,- Kč</p>
+                        <p>5. místo: 5.000,- Kč</p>
+                        <p>6. místo: 5.000,- Kč</p>
+                    </div>
+
+                    <p>Výjimečným soutěžícím může být nabídnuto pracovní místo ve WOOD &amp; Company  v&nbsp;oddělení Quantitative Trading.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!-- prihlaska CTA 1 -->
+    <div class="bloc bgc-carmine-pink d-bloc">
+        <div class="container bloc-md">
+            <div class="row">
+                <div class="col-sm-9">
+                    <h3 class="mg-md">
+                        Umíš programovat?
+                    </h3>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <a onclick="ga('send', 'event', 'Application form', 'click')" href="https://docs.google.com/forms/d/12y71qrjjM2bSJLBJbHAWbF1P0EwhTfX6VEmqqOUBQWw/viewform" target="_blank" class="btn btn-lg wire-btn-white btn-wire">PŘIHLAŠ SE DO SOUTĚŽE</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- zadani -->
+    <div class="bloc l-bloc bgc-white" id="zadani">
+        <div class="container bloc-lg">
+            <h2 class="text-center mg-md ">Co od Tebe čekáme?</h2>
+            <p class="text-center sub-heading">Naprogramuj jednoduchou burzu pro jednu akcii.</p>
+
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="bgc-platinum expected">
+                        <h3 class="text-center mg-md">Python / C++ / C</h3>
+                        <p class="text-center">
+                            Vybrali jsme jazyky, které dokážeme nejlépe ocenit. Náš tým se skládá z profesionálních Python developerů,
+                            ale i s&nbsp;C a C++ máme bohaté zkušenosti. Samozřejmě čekáme, že ve svém zvoleném jazyce efektivně využiješ existující knihovny.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="bgc-platinum expected">
+                        <h3 class="text-center mg-md">TCP sockety</strong></h3>
+                        <p class="text-center">
+                            Klientské programy budou s burzovním serverem komunikovat přes TCP/IP. Jako každý správný server, i burza musí zvládat obsluhovat
+                            mnoho klientů, kteří jsou trvale připojení zároveň.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="bgc-platinum expected">
+                        <h3 class="text-center mg-md">JSON</h3>
+                        <p class="text-center">
+                            Pro jednoduchost si bude burza s klienty vyměňovat zprávy ve formátu JSON. Každá zakódovaná zpráva bude ve streamu oddělena novým řádkem.
+                            Spolu se zadáním od nás dostaneš i testovací implementaci klientů, abys proti nim mohl svůj server testovat.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="bgc-platinum expected">
+                        <h3 class="text-center mg-md">Solidní engineering</h3>
+                        <p class="text-center">
+                            Ukaž, že máš přehled o dobrých praktikách softwarového vývoje. Umíš svůj kód zdokumentovat? Můžeš napsat nějaké automatické testy?
+                            A představ si, že bys svůj produkt měl nasadit naživo: jak ho budeš logovat a sledovat?
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center sub-heading">Jak funguje burza?</p>
+            <div class="row">
+                <div class="col-sm-9">
+                    <h4>Burza je tržiště.</h4>
+                    <p>Burza je místem, na kterém se setkává řada stran, které spolu chtějí obchodovat. Úlohou burzy je shromažďovat a distribuovat informace o nabídce a poptávce
+                    jednotlivých stran (účastníků) a zprostředkovávat mezi nimi obchody.</p>
+
+                    <h4>Burza je server, který umí komunikovat na dvou kanálech.</h4>
+                    <p>Ve <strong>veřejném</strong> kanálu jsou jednosměrně publikována anonymní data o stavu trhu (<em>limit order book</em>) a proběhlých obchodech (<em>trades</em>).</p>
+                    <p>V <strong>privátním</strong> kanálu probíhá obousměrná komunikace s <em>účastníkem trhu</em>. Klient – účastník trhu – zasílá příkazy (<em>orders</em>) k nákupu a prodeji,
+                    nebo své předchozí příkazy ruší. Burza mu zasílá informace (<em>execution reports</em>) o jeho příkazech.</p>
+                    <p>S burzou komunikuje několik nezávislých klientů zároveň (konzumenti anonymních dat i účastníci trhu).</p>
+
+                    <h4>Limit order book</h4>
+                    <p><em>Limit order book</em> je základní datovou strukturou, nad kterou burza operuje. Je to seznam nákupních a prodejních příkazů
+                    (limit orders), které na burzu zaslali účastníci trhu. Limit order book může vypadat například takto:</p>
+
+                    <code>Ukázka 1.</code>
+                    <pre>
+BID                               ASK
+price  participant  quantity      price  participant  quantity
+----------------------------      ----------------------------
+  145            X       100        149            Z       500
+                 Y       200        151            A      1000
+  144            X       300                       B       300
+  142            W      4500                       B      1200
+                                    156            C       150</pre>
+
+                    <p>Na straně <em>bid</em> vidíme celkem tři různé účastníky trhu, kteří zaslali čtyři různé příkazy k nákupu.
+                    Na straně <em>ask</em> jsou čtyři účastníci a pět příkazů k prodeji. Order book splňuje několik vlastností:</p>
+
+                    <ul>
+                        <li><strong>Price-time priority.</strong> Příkazy účastníků jsou řazeny od nejlepší ceny k nejhorší (sestupně na straně bid, vzestupně na straně ask).
+                        Více příkazů na stejné ceně je řazeno do fronty dle času, kdy byly přijaty.</li>
+                        <li>Jeden účastník může zaslat více příkazů, a to i na stejnou cenu.</li>
+                        <li>Identita účastníků trhu je známá pouze burze. Burza ani nemusí zveřejňovat jednotlivé příkazy, pouze celková množství na každé ceně.
+                        Ve veřejných datech může tedy order book <code>Ukázka 1</code> vypadat takto:<br><br>
+                            <pre>
+BID                  ASK
+price  quantity      price  quantity
+---------------      ---------------
+  145       300        149       500
+  144       300        151      2500
+  142      4500        156       150</pre>
+                        </li>
+                        <li>Účastníci trhu mohou své existující příkazy zrušit, pokud ještě nebyly zobchodovány.</li>
+                    </ul>
+
+                    <h4>Matching engine</h4>
+                    <p>Matching engine je algoritmus, který pracuje s limit order book a zprostředkovává obchody mezi účastníky trhu. Uvažujme order book ve stavu <code>Ukázka 1</code>.
+                    Obchod v něm může proběhnout jedině tehdy, když některý účastník trhu pošle příkaz k nákupu za cenu 149 či vyšší, nebo příkaz k prodeji za cenu 145 či nižší.</p>
+                    <p>Pokud účastník trhu pošle příkaz k nákupu za cenu nižší než 149, nebo příkaz k prodeji za cenu vyšší než 145, nedojde k žádnému obchodu.
+                    Takový příkaz bude zařazen do orderbooku na stranu bid (je-li nákupní) nebo na stranu ask (je-li prodejní).</p>
+                    <p>Řekněme, že účastník D pošle na burzu příkaz "SELL 350 shares at $144". Protože je to prodejní příkaz, matching engine se mu bude snažit najít protistranu
+                    na straně bid, kde čekají příkazy k nákupu.</p>
+                    <ol>
+                        <li>Matching engine zjistí, že nejlepší bid cena je 145, což je lepší cena, než kterou prodávající účastník D požaduje. Proto ihned spáruje první příkaz
+                        na ceně 145 (100 akcií od účastníka X) se SELL příkazem účastníka D.</li>
+                        <li>Protože D prodává až 350 akcií, je stokusový příkaz účastníka X zobchodován celý. To znamená, že:
+                            <ol>
+                                <li>účastníku X je zaslán execution report (fill) v jeho privátním kanálu ("zobchodovali jste 100 kusů za cenu 145");</li>
+                                <li>účastníku D je zaslán execution report (fill) v jeho privátním kanálu ("zobchodovali jste 100 kusů za cenu 145");</li>
+                                <li>příkaz "145 X 100" je z orderbooku zcela odstraněn a tato změna je publikována ve veřejném datovém kanálu;</li>
+                                <li>ve veřejném datovém kanálu je publikován obchod (trade) "100 akcií za cenu $145/kus".</li>
+                            </ol>
+                        </li>
+                        <li>Ze SELL příkazu účastníka D zbývá 250 nezobchodovaných akcií, takže matching engine pokračuje v párování. Na ceně 145 je ještě jeden příkaz od účastníka Y.
+                        Matching engine ho spáruje a zobchoduje stejně, jako v předchozím bodě.</li>
+                        <li>Ze SELL příkazu účastníka D zbývá 50 nezobchodovaných akcií. Protože příkaz má zadanou cenu až 144, matching engine může opustit nyní prázdnou cenu 145 a podívat se na
+                        bid příkazy na ceně 144. Tam najde příkaz účastníka X (300 akcií). S ním zobchoduje zbývajících 50 kusů účastníka D:
+                            <ol>
+                                <li>účastníku X je zaslán execution report (fill) v jeho privátním kanálu ("zobchodovali jste 50 kusů za cenu 144");</li>
+                                <li>účastníku D je zaslán execution report (fill) v jeho privátním kanálu ("zobchodovali jste 50 kusů za cenu 144");</li>
+                                <li>příkaz "144 X 300" je v orderbooku změněn na "144 X 250" a tato změna je publikována ve veřejném datovém kanálu;</li>
+                                <li>ve veřejném datovém kanálu je publikován obchod (trade) "50 akcií za cenu $144/kus".</li>
+                            </ol>
+                        </li>
+                        <li>Z příkazu "SELL 350 shares at $144" od D nyní nezbývají žádné akcie k obchodování, takže matching dál nepokračuje.</li>
+                    </ol>
+
+                </div>
+
+                <div class="col-sm-3">
+                    <h4>Slovníček pojmů</h4>
+                    <dl>
+                        <dt>Účastník trhu</dt>
+                            <dd>Firma, která na burze smí obchodovat. Například akciový makléř nebo investiční společnost.</dd>
+                        <dt>Limit order</dt>
+                            <dd>Příkaz k nákupu či prodeji konkrétního počtu akcií za konkrétní cenu. Například limit order "BUY 100 shares at $145"
+                            znamená, že účastník trhu je ochoten nakoupit maximálně 100 kusů akcie za cenu $145/kus nebo lepší (nižší).
+                            Limit order "SELL 300 shares at $149" znamená, že účastník trhu je ochoten prodat maximálně 300 kusů akcie za cenu $149/kus
+                            nebo lepší (vyšší).</dd>
+                        <dt>Bid / ask</dt>
+                            <dd>Nákupní a prodejní strany <em>limit order booku</em>. Na straně "bid" jsou nákupní limit ordery ("to bid" znamená "poptávat").
+                            Na straně "ask" jsou prodejní limit ordery ("to ask" znamená "nabízet").</dd>
+                        <dt>Trade</dt>
+                            <dd>Obchod (trade) na burze proběhne ve chvíli, kdy jeden z účastníků pošle limit order, který svou cenou
+                            vyhovuje již existujícímu limit orderu jiného účastníka trhu. Pokud je například v burzovním limit order booku
+                            příkaz "BUY 100 shares at $145" od účastníka X a účastník Y zašle příkaz "SELL 50 shares at $145", burza okamžitě
+                            zprostředkuje obchod mezi X a Y. Y prodá 50 akcií za celkovou cenu 50&times;$145 = $7,250. X nakoupí 50 akcí od Y.
+                            Ve veřejném datovém kanálu je publikována informace, že proběhl obchod "50 kusů za cenu $145/kus".</dd>
+                        <dt>Execution report</dt>
+                            <dd>Privátní zpráva od burzy účastníkovi trhu. Může potvrzovat, že limit order byl vytvořen či zrušen dle přání účastníka. Nebo může
+                            informovat, že existující limit order byl zobchodován částečně či úplně (filled).</dd>
+                        <dt>Fill</dt>
+                            <dd>Zobchodování části nebo celého limit orderu. Vlastník limit orderu je o fillu informován na privátním kanálu.
+                            Stejná, avšak anonymní informace je viditelná i ve veřejném datovém kanálu jako <em>trade</em>.</dd>
+                        <dt></dt>
+                    </dl>
+                </div>
+            </div> <!-- First row -->
+
+
+            <hr>
+
+            <p class="text-center sub-heading">Jak začít</p>
+            <ol>
+                <li><strong><a href="wood-coding-challenge-starter-kit.zip" onclick="ga('send', 'event', 'Starter kit', 'click')" target="_blank"><span class="et-icon-download icon-md"></span> Stáhni si</a></strong>
+                naši implementaci obou klientů – konzumenta anonymních dat i účastníka trhu. Uvidíš, jak by se měla burza zvenku chovat.</li>
+                <li>Začni programovat svůj burzovní server. Je na tobě, jestli začneš implementací interní mašinérie, nebo raději síťové komunikace a obsluhy klientů.</li>
+                <li>Implementuj popsané chování limit order booku a matching engine. Zajisti, že účastníci trhu mohou vkládat a rušit příkazy. Posílej jim execution reporty,
+                když něco zobchodují.</li>
+                <li>Vše, co se na burze děje, publikuj i v anonymním datovém kanálu.</li>
+            </ol>
+
+
+            <p class="text-center sub-heading">Moc jednoduché?</p>
+            <p>Výše popsaná funkcionalita je samozřejmě jen úplný základ. Pokud se chceš vyšvihnout a posunout svoji práci o krok dál, fantazii se meze nekladou.
+            Pro inspiraci navrhujeme pár zlepšení:</p>
+            <ul>
+                <li>Přidej podporu pro tzv. MARKET ordery. Takové příkazy nenesou žádnou konkrétní cenu. Jakmile je burza přijme, okamžitě je zobchoduje proti aktuálnímu nejlepšímu bidu
+                (u MARKET sell příkazů) nebo nejlepšímu asku (u MARKET buy).</li>
+                <li>Přidej podporu pro necelé ceny. Nápověda: float je pro reprezentaci cen nepoužitelný kvůli nepřesnosti.</li>
+                <li>Uprav klienty i burzu, aby místo JSON komunikovali nějakým binárním formátem, například Avro. V praxi jsou JSON zprávy často zbytečně velké.</li>
+                <li>Přidej perzistenci. Co když klient nebo burzovní program zhavaruje a musí se znovu restartovat? Bylo by pěkné, kdyby svůj předchozí stav měl uložený
+                na disku nebo v databázi a mohl ho obnovit.</li>
+            </ul>
+
+            <p class="text-center sub-heading">Máš jakékoliv otázky? Piš na <a href="mailto:codingchallenge@wood.cz">codingchallenge@wood.cz</a>.</p>
+
+        </div>
+    </div>
+
+
+
+    <!-- quant -->
+    <div class="bloc bgc-platinum l-bloc" id="quant">
+        <div class="container bloc-sm">
+            <p class="text-center sub-heading">Soutěž organizuje</p>
+            <h2 class="text-center mg-md">Quantitative Trading tým ve WOOD &amp; Company</h2>
+
+            <p>Jsme malý, velice ambiciózní tým analytiků a programátorů, kteří obchodují na finančních trzích.
+            Vyvíjíme si k tomu vlastní optimalizovaný software. Naše příležitosti jsou větší, než naše kapacita,
+            a proto vždy hledáme zapálené programátory, kteří nám pomůžou zvládnout exponenciální růst.</p>
+
+            <p>I když náš kód obchoduje naostro, fungujeme jako agilní startup. Stavíme na open source, používáme
+            nejnovější verze a každý den nasazujeme nový kód do produkce.</p>
+
+            <p>Máme webové služby a analyzujeme hodně dat, ale srdce naší infrastruktury je zajímavější: velice
+            rychlý event-driven aplikační server, který obchoduje v reálném čase. Takový Python se jen tak nevidí...</p>
+        </div>
+    </div>
+
+
+
+    <!-- prihlaska CTA 2 -->
+    <div class="bloc bgc-carmine-pink d-bloc">
+        <div class="container bloc-md">
+            <div class="row">
+                <div class="col-sm-9">
+                    <h3 class="mg-md">
+                        Zajímá tě, jak se programují finanční aplikace?
+                    </h3>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <a onclick="ga('send', 'event', 'Application form', 'click')" href="https://docs.google.com/forms/d/12y71qrjjM2bSJLBJbHAWbF1P0EwhTfX6VEmqqOUBQWw/viewform" target="_blank" class="btn btn-lg wire-btn-white btn-wire">PŘIHLAŠ SE DO SOUTĚŽE</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- pravidla -->
+    <div class="bloc l-bloc bgc-white" id="pravidla">
+        <div class="container bloc-lg">
+            <h2 class="text-center mg-md ">Pravidla WOOD &amp; Company Coding Challenge</h2>
+
+            <ol>
+                <li>Organizátorem WOOD &amp; Company Coding Challenge je WOOD &amp; Company Financial Services, a.s., se sídlem nám. Republiky 1079/1a, 110 00 Praha 1, IČ: 26503808.</li>
+                <li>WOOD &amp; Company Coding Challenge se mohou zúčastnit osoby starší 18 let, které splní podmínky pro účast ve WOOD &amp; Company Coding Challenge stanovené těmito pravidly.</li>
+                <li>Soutěžící se může WOOD &amp; Company Coding Challenge zúčastnit (tj. vyplnit přihlášku a zaslat řešení soutěžního projektu) pouze jednou.</li>
+                <li>Každý soutěžící musí vyplnit přihlášku a zaslat své řešení soutěžního projektu (zdrojový kód a dokumentaci) na email codingchallenge@wood.cz.</li>
+                <li>Řešení soutěžního projektu (zdrojový kód a dokumentace) bude WOOD &amp; Company použito pouze pro účely vyhodnocení WOOD &amp; Company Coding Challenge. Řešení soutěžního projektu (zdrojový kód a dokumentace) zůstává ve vlastnictví soutěžícího a soutěžící svou účastí ve WOOD &amp; Company Coding Challenge neuděluje WOOD &amp; Company oprávnění k dalšímu použití soutěžního díla (zdrojového kódu a dokumentace).</li>
+                <li>WOOD &amp; Company Coding Challenge se vyhlašuje ke dni 27. 4. 2016. Nejpozdější termín pro přihlášení a odevzdání řešení soutěžního projektu je 12. června 2016 (dále jen „Doba trvání“).</li>
+                <li>Každému soutěžícímu bude elektronicky potvrzeno přijetí přihlášky i odevzdání řešení soutěžního projektu.</li>
+                <li>Řešení soutěžního projektu musí obsahovat zdrojový kód v jazyce Python, C++, nebo C a alespoň základní dokumentaci. Dokumentace a případná následující prezentace ve finálovém kole mohou být v českém, slovenském, nebo anglickém jazyce.</li>
+                <li>K řešení soutěžního projektu je nutné připojit i čestné prohlášení soutěžícího, že soutěžní projekt vypracoval sám a jeho obsah není v konfliktu s autorským zákonem.</li>
+                <li>Do 17. června 2016 vybere porota složená ze zaměstnanců a konzultantů WOOD &amp; Company soutěžící postupující do finálového kola WOOD &amp; Company Coding Challenge. Ti budou informováni emailem.</li>
+                <li>Řešení soutěžního projektu budou hodnocena zejména dle následujících kritérií:
+                    <ul>
+                        <li>splnění zadání;
+                        <li>organizace kódu a idiomatické užití jazyka;
+                        <li>volba algoritmů a datových struktur;
+                        <li>kvalita automatických testů;
+                        <li>kvalita dokumentace;
+                        <li>škálovatelnost a rozšiřitelnost.
+                    </ul>
+                </li>
+                <li>Porota WOOD &amp; Company má právo konkrétní soutěžní projekt nehodnotit, shodne-li se na tom, že není dostatečně kvalitní. Porota WOOD &amp; Company má tedy i právo neudělit kteroukoliv z výher.</li>
+                <li>O termínu a místě konání finálového kola WOOD &amp; Company Coding Challenge budou finalisté včas informováni emailem.</li>
+                <li>Ve finálovém kole WOOD &amp; Company Coding Challenge prezentuje soutěžící svůj soutěžní projekt porotě WOOD &amp; Company. Ostatní finalisté mohou být při prezentaci přítomni.</li>
+                <li>Výhra za nejlepší řešení soutěžního projektu je 40.000,- Kč za 1. místo, 25.000,- Kč za 2. místo, 15.000,- Kč za 3. místo, 10.000,- Kč za 4. místo, 5.000,- Kč za 5. místo a 5.000,- Kč za 6. místo. Soutěžící bere na vědomí, že výhra je předmětem daně z příjmu a že WOOD &amp; Company provede příslušné srážky v souladu s právními předpisy České republiky. Podmínkou vyplacení výhry je doložení informací nutných ke správnému sražení daně v České republice.</li>
+                <li>Soutěžícím může být nabídnuta pracovní pozice ve WOOD &amp; Company v oddělení Quantitative Trading. Na tuto nabídku nevzniká právní nárok.</li>
+                <li>Účastí ve WOOD &amp; Company Coding Challenge soutěžící dobrovolně uděluje v souladu se zákonem č. 101/200 Sb., o ochraně osobních údajů, souhlas se zpracováním svých osobních údajů v rozsahu vyžádaném pro účely WOOD &amp; Company Coding Challenge po dobu pěti (5) let od začátku Doby trvání WOOD &amp; Company Coding Challenge. Soutěžící má právo svůj souhlas odvolat, a to písemným oznámením zaslaným WOOD &amp; Company. Odvolání souhlasu je účinné okamžikem jeho doručení WOOD &amp; Company.</li>
+                <li>WOOD &amp; Company je oprávněna pravidla WOOD &amp; Company Coding Challenge kdykoliv změnit či WOOD &amp; Company Coding Challenge zcela zrušit, a to i před uplynutím Doby trvání, bez uvedení důvodu a stanovení náhrady. Nárok na výhru není vymahatelný soudem.  WOOD &amp; Company si vyhrazuje právo vyloučit z WOOD &amp; Company Coding Challenge soutěžícího, který poruší jakékoliv ustanovení těchto pravidel.</li>
+            </ol>
+        </div>
+    </div>
+
+
+
+    <!-- ScrollToTop Button -->
+    <a class="bloc-button btn btn-d scrollToTop" onclick="scrollToTarget('1')"><span class="fa fa-chevron-up"></span></a>
+
+
+
+    <!-- footer -->
+    <div class="bloc bgc-platinum l-bloc">
+        <div class="container bloc-sm">
+            <div class="row">
+                <div class="col-sm-4">
+                    <p>
+                        WOOD &amp; Company Financial Services, a.s.<br>
+                        náměstí Republiky 1079/1a, 110 00 Praha 1<br>
+                        Česká Republika<br>
+                        Tel. (+420) 222 096 111, (+420) 222 096 222<br>
+                        <a href="mailto:codingchallenge@wood.cz">codingchallenge@wood.cz</a>
+                    </p>
+                </div>
+
+                <div class="col-sm-4 pull-right text-right">
+                    <img src="img/wood.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+<!-- Main container END -->
+</body>
+</html>
