@@ -10,6 +10,7 @@ pickleshare==0.7.2
 ptyprocess==0.5.1
 py==1.4.31
 pytest==2.9.2
+pytest-asyncio==0.4.1
 pytest-cov==2.2.1
 python-dateutil==2.5.3
 simplegeneric==0.8.1

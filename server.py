@@ -75,7 +75,7 @@ class ServerProtocol(asyncio.Protocol):
             logger.warning('Bad input: %s' % e)
             reply = {'error': str(e)}
 
-        self.transport.write((json.dumps(reply) + '\n').encode('utf-8'))
+        self.transport.write(json.dumps(reply).encode('utf-8') + b'\n')
 
 
 if __name__ == '__main__':
