@@ -4,6 +4,8 @@ import pytest
 
 from server import ServerProtocol
 
+# TODO check malicious/bad communication
+
 
 async def send(writer, msg):
     writer.write(json.dumps(msg).encode('utf-8') + b'\n')
@@ -18,14 +20,53 @@ async def read(reader):
 async def test_process(event_loop, unused_tcp_port):
     server = await event_loop.create_server(ServerProtocol,
                                             port=unused_tcp_port)
-    reader, writer = await asyncio.open_connection(port=unused_tcp_port)
+    reader1, writer1 = await asyncio.open_connection(port=unused_tcp_port)
+    reader2, writer2 = await asyncio.open_connection(port=unused_tcp_port)
 
-    await send(writer, {
+    await send(writer1, {
         'message': 'createOrder',
         'orderId': 123,
-        'side': 'BUY',
-        'price': 1000,
-        'quantity': 4,
+        'side': 'SELL',
+        'price': 149,
+        'quantity': 20,
     })
-    answer = await read(reader)
+    answer = await read(reader1)
     assert answer['report'] == 'NEW'
+
+    await send(writer1, {
+        'message': 'createOrder',
+        'orderId': 1234,
+        'side': 'SELL',
+        'price': 140,
+        'quantity': 100,
+    })
+    answer = await read(reader1)
+    assert answer['report'] == 'NEW'
+
+    await send(writer2, {
+        'message': 'createOrder',
+        'orderId': 987,
+        'side': 'BUY',
+        'price': 149,
+        'quantity': 120,
+    })
+    answer = await read(reader2)
+    assert answer['report'] == 'NEW'
+
+    answer = await read(reader2)
+    assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 100
+    answer = await read(reader1)
+    assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 100
+
+    answer = await read(reader2)
+    assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 20
+    answer = await read(reader1)
+    assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 20

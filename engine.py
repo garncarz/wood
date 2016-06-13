@@ -25,6 +25,7 @@ def trade():
 
     if buy.quantity < sell.quantity:
         sell2 = Order(side='sell',
+                      participant=sell.participant,
                       price=sell.price,
                       quantity=sell.quantity - buy.quantity,
                       registered_at=sell.registered_at)
@@ -32,6 +33,7 @@ def trade():
 
     elif sell.quantity < buy.quantity:
         buy2 = Order(side='buy',
+                     participant=buy.participant,
                      price=buy.price,
                      quantity=buy.quantity - sell.quantity,
                      registered_at=buy.registered_at)
@@ -39,4 +41,11 @@ def trade():
 
     db_session.commit()
 
-    return price, quantity
+    return {
+        'price': price,
+        'quantity': quantity,
+        'buy': buy,
+        'sell': sell,
+        'buyer': buy.participant,
+        'seller': sell.participant,
+    }

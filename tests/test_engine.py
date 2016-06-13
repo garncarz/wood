@@ -16,9 +16,18 @@ def test_match():
     factories.Order(side='sell', quantity=350, price=144)
     db_session.commit()
 
-    assert engine.trade() == (145, 100)
-    assert engine.trade() == (145, 200)
-    assert engine.trade() == (144, 50)
+    trade1 = engine.trade()
+    assert trade1['price'] == 145
+    assert trade1['quantity'] == 100
+
+    trade2 = engine.trade()
+    assert trade2['price'] == 145
+    assert trade2['quantity'] == 200
+
+    trade3 = engine.trade()
+    assert trade3['price'] == 144
+    assert trade3['quantity'] == 50
+
     assert engine.trade() is False
 
 
