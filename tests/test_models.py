@@ -5,8 +5,6 @@ import models, factories
 
 
 def test_table():
-    models.create_db()
-
     b = partial(factories.Order, side='bid')
     b(price=145, quantity=100)
     b(price=145, quantity=200)
