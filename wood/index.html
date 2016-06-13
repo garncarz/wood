@@ -110,7 +110,7 @@ ga('send', 'pageview');
                     <div class="text-center">
                         <span class="et-icon-calendar icon-xl icon-carmine-pink"></span>
                     </div>
-                    <h3 class="text-center mg-md ">2. Pošli svůj zdrojový kód v&nbsp;Pythonu, případně C++ či&nbsp;C, do <strong>12. června 2016</strong></h3>
+                    <h3 class="text-center mg-md ">2. Pošli svůj zdrojový kód v&nbsp;Pythonu, případně C++ či&nbsp;C, do <strong>26. června 2016</strong></h3>
                     <p class="text-center">
                         Pošli kód a dokumentaci na <a href="mailto:codingchallenge@wood.cz">codingchallenge@wood.cz</a>.
                         Nezapomeň připojit i čestné prohlášení, že soutěžní projekt je Tvým vlastním dílem a není v konfliktu s autorským zákonem
@@ -365,7 +365,13 @@ price  quantity      price  quantity
                 <li>Přidej podporu pro necelé ceny. Nápověda: float je pro reprezentaci cen nepoužitelný kvůli nepřesnosti.</li>
                 <li>Uprav klienty i burzu, aby místo JSON komunikovali nějakým binárním formátem, například Avro. V praxi jsou JSON zprávy často zbytečně velké.</li>
                 <li>Přidej perzistenci. Co když klient nebo burzovní program zhavaruje a musí se znovu restartovat? Bylo by pěkné, kdyby svůj předchozí stav měl uložený
-                na disku nebo v databázi a mohl ho obnovit.</li>
+                na disku nebo v databázi a mohl ho obnovit. K tomu ovšem budeš muset rozšířit komunikaci mezi klienty a burzou tak, aby se klienti museli přihlašovat a identifikovat nějakým jménem.</li>
+                <li>Rozšiř komunikaci mezi klienty a burzou tak, aby si obě strany pravidelně vyměňovaly testovací zprávy (heartbeat, neboli ping-pong). Pokud některá ze stran nedostane zprávu
+                v očekávaném intervalu, měla by spojení považovat za nefunkční a pokusit se to nějak vyřešit.</li>
+                <li>Přidej do zpráv tzv. sekvenční čísla. Obě strany díky nim mohou ověřit, že přijaly a zpracovaly všechny zprávy ve správném pořadí. Toto je obzvlášť důležité
+                při restartu spojení po nějakém pádu.</li>
+                <li>Některé burzy automaticky zruší všechny ordery účastníka, který se neočekávaně odpojí. Účastníkovi se tak snižuje riziko, že kvůli technickým problémům zobchoduje ordery,
+                které by býval chtěl zrušit.</li>
             </ul>
 
             <p class="text-center sub-heading">Máš jakékoliv otázky? Piš na <a href="mailto:codingchallenge@wood.cz">codingchallenge@wood.cz</a>.</p>
@@ -424,11 +430,11 @@ price  quantity      price  quantity
                 <li>Soutěžící se může WOOD &amp; Company Coding Challenge zúčastnit (tj. vyplnit přihlášku a zaslat řešení soutěžního projektu) pouze jednou.</li>
                 <li>Každý soutěžící musí vyplnit přihlášku a zaslat své řešení soutěžního projektu (zdrojový kód a dokumentaci) na email codingchallenge@wood.cz.</li>
                 <li>Řešení soutěžního projektu (zdrojový kód a dokumentace) bude WOOD &amp; Company použito pouze pro účely vyhodnocení WOOD &amp; Company Coding Challenge. Řešení soutěžního projektu (zdrojový kód a dokumentace) zůstává ve vlastnictví soutěžícího a soutěžící svou účastí ve WOOD &amp; Company Coding Challenge neuděluje WOOD &amp; Company oprávnění k dalšímu použití soutěžního díla (zdrojového kódu a dokumentace).</li>
-                <li>WOOD &amp; Company Coding Challenge se vyhlašuje ke dni 27. 4. 2016. Nejpozdější termín pro přihlášení a odevzdání řešení soutěžního projektu je 12. června 2016 (dále jen „Doba trvání“).</li>
+                <li>WOOD &amp; Company Coding Challenge se vyhlašuje ke dni 27. 4. 2016. Nejpozdější termín pro přihlášení a odevzdání řešení soutěžního projektu je 26. června 2016 (dále jen „Doba trvání“).</li>
                 <li>Každému soutěžícímu bude elektronicky potvrzeno přijetí přihlášky i odevzdání řešení soutěžního projektu.</li>
                 <li>Řešení soutěžního projektu musí obsahovat zdrojový kód v jazyce Python, C++, nebo C a alespoň základní dokumentaci. Dokumentace a případná následující prezentace ve finálovém kole mohou být v českém, slovenském, nebo anglickém jazyce.</li>
                 <li>K řešení soutěžního projektu je nutné připojit i čestné prohlášení soutěžícího, že soutěžní projekt vypracoval sám a jeho obsah není v konfliktu s autorským zákonem.</li>
-                <li>Do 17. června 2016 vybere porota složená ze zaměstnanců a konzultantů WOOD &amp; Company soutěžící postupující do finálového kola WOOD &amp; Company Coding Challenge. Ti budou informováni emailem.</li>
+                <li>Do 1. července 2016 vybere porota složená ze zaměstnanců a konzultantů WOOD &amp; Company soutěžící postupující do finálového kola WOOD &amp; Company Coding Challenge. Ti budou informováni emailem.</li>
                 <li>Řešení soutěžního projektu budou hodnocena zejména dle následujících kritérií:
                     <ul>
                         <li>splnění zadání;
