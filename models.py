@@ -16,7 +16,7 @@ class Order(Base):
 
     id = Column(Integer, primary_key=True)
     traded = Column(Boolean, default=False, nullable=False, index=True)
-    side = Column(Enum('ask', 'bid'), nullable=False, index=True)
+    side = Column(Enum('buy', 'sell'), nullable=False, index=True)
     price = Column(Integer, nullable=False, index=True)
     participant_id = Column(Integer, nullable=True)
     quantity = Column(Integer, nullable=False)

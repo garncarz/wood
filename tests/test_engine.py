@@ -13,7 +13,7 @@ def test_empty():
 
 def test_match():
     test_models.test_table()
-    factories.Order(side='ask', quantity=350, price=144)
+    factories.Order(side='sell', quantity=350, price=144)
     db_session.commit()
 
     assert engine.trade() == (145, 100)
@@ -22,18 +22,18 @@ def test_match():
     assert engine.trade() is False
 
 
-def test_no_bids():
-    a = partial(factories.Order, side='ask')
-    a(price=149, quantity=500)
-    a(price=151, quantity=1000)
-    a(price=151, quantity=300)
+def test_no_buys():
+    s = partial(factories.Order, side='sell')
+    s(price=149, quantity=500)
+    s(price=151, quantity=1000)
+    s(price=151, quantity=300)
     db_session.commit()
 
     assert engine.trade() is False
 
 
-def test_no_asks():
-    b = partial(factories.Order, side='bid')
+def test_no_sells():
+    b = partial(factories.Order, side='buy')
     b(price=145, quantity=100)
     b(price=145, quantity=200)
     b(price=144, quantity=300)

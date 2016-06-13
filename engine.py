@@ -3,39 +3,39 @@ from models import Order
 
 
 def trade():
-    bid = Order.query.filter_by(side='bid', traded=False) \
+    buy = Order.query.filter_by(side='buy', traded=False) \
             .order_by(Order.registered_at, Order.price.desc()) \
             .first()
-    if bid is None:
+    if buy is None:
         return False
 
-    ask = Order.query.filter_by(side='ask', traded=False) \
-            .filter(Order.price <= bid.price) \
+    sell = Order.query.filter_by(side='sell', traded=False) \
+            .filter(Order.price <= buy.price) \
             .order_by(Order.registered_at, Order.price) \
             .first()
-    if ask is None:
+    if sell is None:
         return False
 
-    price = bid.price
-    quantity = min(bid.quantity, ask.quantity)
+    price = buy.price
+    quantity = min(buy.quantity, sell.quantity)
 
-    bid.traded = True
-    ask.traded = True
-    db_session.add_all([bid, ask])
+    buy.traded = True
+    sell.traded = True
+    db_session.add_all([buy, sell])
 
-    if bid.quantity < ask.quantity:
-        ask2 = Order(side='ask',
-                     price=ask.price,
-                     quantity=ask.quantity - bid.quantity,
-                     registered_at=ask.registered_at)
-        db_session.add(ask2)
+    if buy.quantity < sell.quantity:
+        sell2 = Order(side='sell',
+                      price=sell.price,
+                      quantity=sell.quantity - buy.quantity,
+                      registered_at=sell.registered_at)
+        db_session.add(sell2)
 
-    elif ask.quantity < bid.quantity:
-        bid2 = Order(side='bid',
-                     price=bid.price,
-                     quantity=bid.quantity - ask.quantity,
-                     registered_at=bid.registered_at)
-        db_session.add(bid2)
+    elif sell.quantity < buy.quantity:
+        buy2 = Order(side='buy',
+                     price=buy.price,
+                     quantity=buy.quantity - sell.quantity,
+                     registered_at=buy.registered_at)
+        db_session.add(buy2)
 
     db_session.commit()
 
