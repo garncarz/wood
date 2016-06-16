@@ -1,0 +1,3 @@
+*.sqlite*
+
+market/settings_local.py

@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 
 import argparse
-import logging
 
 from market import models
 from market.server import run
-
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
+from market import settings
 
 
 arg_parser = argparse.ArgumentParser(
