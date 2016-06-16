@@ -44,4 +44,5 @@ class Order(Base):
 
 
 def create_db():
+    logger.info('Creating DB schema...')
     Base.metadata.create_all(db_engine)
