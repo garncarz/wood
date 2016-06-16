@@ -1,7 +1,7 @@
 from functools import partial
 
-from database import db_session
-import models, factories
+from market.database import db_session
+from market import models, factories
 
 
 def test_table():

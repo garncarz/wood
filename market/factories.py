@@ -3,8 +3,8 @@ import random
 from factory import lazy_attribute
 from factory.alchemy import SQLAlchemyModelFactory
 
-from database import db_session
-import models
+from .database import db_session
+from . import models
 
 
 lazy = lambda call: lazy_attribute(lambda obj: call())

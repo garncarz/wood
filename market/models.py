@@ -7,7 +7,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
-from database import Base, db_engine, db_session
+from .database import Base, db_engine, db_session
 
 logger = logging.getLogger(__name__)
 

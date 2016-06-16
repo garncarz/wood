@@ -1,8 +1,8 @@
 from functools import partial
 
-from database import db_session
-import engine
-import factories
+from market.database import db_session
+from market import engine
+from market import factories
 
 import test_models
 

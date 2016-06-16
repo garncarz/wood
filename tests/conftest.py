@@ -1,6 +1,6 @@
 import pytest
 
-import models
+from market import models
 
 
 @pytest.fixture(scope='session', autouse=True)

@@ -2,7 +2,7 @@ import asyncio
 import json
 import pytest
 
-from server import ServerProtocol
+from market.server import ServerProtocol
 
 # TODO check malicious/bad communication
 

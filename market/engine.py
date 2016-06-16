@@ -1,5 +1,5 @@
-from database import db_session
-from models import Order
+from .database import db_session
+from .models import Order
 
 
 def trade():
