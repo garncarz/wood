@@ -16,6 +16,8 @@ arg_parser.add_argument('--host', nargs='?', default='localhost',
                         help='Listen as, default is localhost.')
 arg_parser.add_argument('--port', nargs='?', default=7001, type=int,
                         help='Listen on, default is 7001.')
+arg_parser.add_argument('--port-datastream', nargs='?', default=7002, type=int,
+                        help='Datastream listen on, default is 7002.')
 
 
 if __name__ == '__main__':
@@ -24,4 +26,4 @@ if __name__ == '__main__':
     if args.create_db:
         models.create_db()
 
-    run(args.host, args.port)
+    run(args.host, args.port, args.port_datastream)

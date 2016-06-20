@@ -2,7 +2,7 @@ import asyncio
 import json
 import pytest
 
-from market.server import ServerProtocol
+from market.server import ParticipantProtocol
 
 # TODO check malicious/bad communication
 
@@ -18,7 +18,7 @@ async def read(reader):
 
 @pytest.mark.asyncio
 async def test_process(event_loop, unused_tcp_port):
-    server = await event_loop.create_server(ServerProtocol,
+    server = await event_loop.create_server(ParticipantProtocol,
                                             port=unused_tcp_port)
     reader1, writer1 = await asyncio.open_connection(port=unused_tcp_port)
     reader2, writer2 = await asyncio.open_connection(port=unused_tcp_port)

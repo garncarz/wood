@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from .database import db_session
 from .models import Order
 
@@ -44,8 +46,7 @@ def trade():
     return {
         'price': price,
         'quantity': quantity,
+        'time': datetime.now(),
         'buy': buy,
         'sell': sell,
-        'buyer': buy.participant,
-        'seller': sell.participant,
     }

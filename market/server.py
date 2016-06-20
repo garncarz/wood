@@ -16,6 +16,8 @@ class MarketException(Exception):
 
 
 def process(message, participant):
+    order = None
+
     try:
         action = message['message']
         order_id = int(message['orderId'])
@@ -52,22 +54,70 @@ def process(message, participant):
         logger.warning('Unknown action: %s' % action)
         raise MarketException('Unknown action.')
 
-    return {
+    return order, {
         'message': 'executionReport',
         'orderId': order_id,
         'report': report,
     }
 
 
-clients = {}
+participants = {}
+watchers = []
 
 
-def _send(transport, msg):
-    transport.write(json.dumps(msg).encode('utf-8') + b'\n')
+def _send(client, msg):
+    client.transport.write(json.dumps(msg).encode('utf-8') + b'\n')
     logger.debug('Message sent: %s' % msg)
 
 
-class ServerProtocol(asyncio.Protocol):
+def _send_datastream_orderbook(order):
+    msg = {
+        'type': 'orderbook',
+        'side': order.side_datastream,
+        'price': order.price,
+        'quantity': order.quantity,
+    }
+
+    for watcher in watchers:
+        _send(watcher, msg)
+
+
+def _send_datastream_trade(trade):
+    msg = {
+        'type': 'trade',
+        'time': trade['time'].timestamp(),
+        'price': trade['price'],
+        'quantity': trade['quantity'],
+    }
+
+    for watcher in watchers:
+        _send(watcher, msg)
+
+
+def _make_trades():
+    trade = engine.trade()
+    while trade:
+        logger.info('Trade: %s' % trade)
+
+        inform_participant = lambda side: _send(
+            participants[trade[side].participant.id],
+            {
+                'message': 'executionReport',
+                'orderId': trade[side].id,
+                'report': 'FILL',
+                'price': trade['price'],
+                'quantity': trade['quantity'],
+            },
+        )
+        inform_participant('buy')
+        inform_participant('sell')
+
+        _send_datastream_trade(trade)
+
+        trade = engine.trade()
+
+
+class ParticipantProtocol(asyncio.Protocol):
 
     def connection_made(self, transport):
         self.transport = transport
@@ -78,55 +128,60 @@ class ServerProtocol(asyncio.Protocol):
         db_session.add(self.participant)
         db_session.commit()
 
-        clients[self.participant.id] = self
+        participants[self.participant.id] = self
 
     def data_received(self, data):
         message = json.loads(data.decode('utf-8'))
         logger.debug('Message received: %s' % message)
 
         try:
-            reply = process(message, self.participant)
+            order, reply = process(message, self.participant)
         except MarketException as e:
             logger.warning('Bad input: %s' % e)
             reply = {'error': str(e)}
 
-        _send(self.transport, reply)
+        _send(self, reply)
+        _send_datastream_orderbook(order)
 
-        trade = engine.trade()
-        while trade:
-            logger.info('Trade: %s' % trade)
-            _send(clients[trade['buyer'].id].transport, {
-                'message': 'executionReport',
-                'orderId': trade['buy'].id,
-                'report': 'FILL',
-                'price': trade['price'],
-                'quantity': trade['quantity'],
-            })
-            _send(clients[trade['seller'].id].transport, {
-                'message': 'executionReport',
-                'orderId': trade['sell'].id,
-                'report': 'FILL',
-                'price': trade['price'],
-                'quantity': trade['quantity'],
-            })
-            trade = engine.trade()
+        _make_trades()
 
     def connection_lost(self, exc):
         logger.debug('Disconnected: %s' % str(self.peername))
-        del clients[self.participant.id]
+        del participants[self.participant.id]
 
 
-def run(host, port):
+class DatastreamProtocol(asyncio.Protocol):
+
+    def connection_made(self, transport):
+        self.transport = transport
+        self.peername = transport.get_extra_info('peername')
+        logger.debug('Connected (watcher): %s' % str(self.peername))
+
+        watchers.append(self)
+
+    def connection_lost(self, exc):
+        logger.debug('Disconnected (watcher): %s' % str(self.peername))
+        watchers.remove(self)
+
+
+def run(host, port, port_datastream):
     loop = asyncio.get_event_loop()
-    coro = loop.create_server(ServerProtocol, host, port)
+
+    coro = loop.create_server(ParticipantProtocol, host, port)
     server = loop.run_until_complete(coro)
 
-    logger.info('Listening on %s:%s' % (host, port))
+    coro_datastream = loop.create_server(DatastreamProtocol, host,
+                                         port_datastream)
+    server_datastream = loop.run_until_complete(coro_datastream)
+
+    logger.info('Listening on %s:%s,%s' % (host, port, port_datastream))
     try:
         loop.run_forever()
     except KeyboardInterrupt:
         pass
 
     server.close()
+    server_datastream.close()
     loop.run_until_complete(server.wait_closed())
+    loop.run_until_complete(server_datastream.wait_closed())
     loop.close()

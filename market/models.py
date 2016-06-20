@@ -42,6 +42,13 @@ class Order(Base):
     def __repr__(self):
         return '<Order %s/$%d/%d pcs>' % (self.side, self.price, self.quantity)
 
+    @property
+    def side_datastream(self):
+        if self.side == 'buy':
+            return 'bid'
+        if self.side == 'sell':
+            return 'ask'
+
 
 def create_db():
     logger.info('Creating DB schema...')
