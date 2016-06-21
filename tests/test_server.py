@@ -2,7 +2,7 @@ import asyncio
 import json
 import pytest
 
-from market.server import ParticipantProtocol
+from market.server import ParticipantProtocol, DatastreamProtocol
 
 # TODO check malicious/bad communication
 
@@ -17,11 +17,18 @@ async def read(reader):
 
 
 @pytest.mark.asyncio
-async def test_process(event_loop, unused_tcp_port):
+async def test_process(event_loop, unused_tcp_port_factory):
+    port = unused_tcp_port_factory()
+    port_datastream = unused_tcp_port_factory()
+
     server = await event_loop.create_server(ParticipantProtocol,
-                                            port=unused_tcp_port)
-    reader1, writer1 = await asyncio.open_connection(port=unused_tcp_port)
-    reader2, writer2 = await asyncio.open_connection(port=unused_tcp_port)
+                                            port=port)
+    server_datastream = await event_loop.create_server(DatastreamProtocol,
+                                                       port=port_datastream)
+
+    reader1, writer1 = await asyncio.open_connection(port=port)
+    reader2, writer2 = await asyncio.open_connection(port=port)
+    datastream, _ = await asyncio.open_connection(port=port_datastream)
 
     await send(writer1, {
         'message': 'createOrder',
@@ -32,6 +39,13 @@ async def test_process(event_loop, unused_tcp_port):
     })
     answer = await read(reader1)
     assert answer['report'] == 'NEW'
+    answer = await read(datastream)
+    assert answer == {
+        'type': 'orderbook',
+        'side': 'ask',
+        'price': 149,
+        'quantity': 20,
+    }
 
     await send(writer1, {
         'message': 'createOrder',
@@ -42,6 +56,8 @@ async def test_process(event_loop, unused_tcp_port):
     })
     answer = await read(reader1)
     assert answer['report'] == 'NEW'
+    answer = await read(datastream)
+    assert answer['price'] == 140
 
     await send(writer2, {
         'message': 'createOrder',
@@ -52,6 +68,8 @@ async def test_process(event_loop, unused_tcp_port):
     })
     answer = await read(reader2)
     assert answer['report'] == 'NEW'
+    answer = await read(datastream)
+    assert answer['side'] == 'bid'
 
     answer = await read(reader2)
     assert answer['report'] == 'FILL'
@@ -59,6 +77,10 @@ async def test_process(event_loop, unused_tcp_port):
     assert answer['quantity'] == 100
     answer = await read(reader1)
     assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 100
+    answer = await read(datastream)
+    assert answer['type'] == 'trade'
     assert answer['price'] == 149
     assert answer['quantity'] == 100
 
@@ -68,5 +90,9 @@ async def test_process(event_loop, unused_tcp_port):
     assert answer['quantity'] == 20
     answer = await read(reader1)
     assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 20
+    answer = await read(datastream)
+    assert answer['type'] == 'trade'
     assert answer['price'] == 149
     assert answer['quantity'] == 20
