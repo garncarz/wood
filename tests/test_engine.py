@@ -84,3 +84,19 @@ def test_correct_order():
     assert trade3['quantity'] == 5
 
     assert engine.trade() is False
+
+
+def test_decimal():
+    s = partial(factories.Order, side='sell')
+    s(price=100.5, quantity=500)
+
+    b = partial(factories.Order, side='buy')
+    b(price=100.5, quantity=100)
+
+    db_session.commit()
+
+    trade = engine.trade()
+    assert trade['price'] == 100.5
+    assert trade['quantity'] == 100
+
+    assert engine.trade() is False

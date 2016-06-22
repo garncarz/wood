@@ -1,5 +1,5 @@
 import asyncio
-import json
+import simplejson as json
 import logging
 
 from .database import db_session

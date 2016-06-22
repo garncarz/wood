@@ -1,7 +1,7 @@
 import logging
 
 from sqlalchemy import (
-    Column, Boolean, DateTime, Enum, Integer,
+    Column, Boolean, DateTime, Enum, Integer, Numeric,
     Table, ForeignKey,
 )
 from sqlalchemy.orm import relationship
@@ -31,7 +31,7 @@ class Order(Base):
     id = Column(Integer, primary_key=True)
     traded = Column(Boolean, default=False, nullable=False, index=True)
     side = Column(Enum('buy', 'sell'), nullable=False, index=True)
-    price = Column(Integer, nullable=False, index=True)
+    price = Column(Numeric, nullable=False, index=True)
     participant_id = Column(Integer, ForeignKey(Participant.id), nullable=True)
     quantity = Column(Integer, nullable=False)
     registered_at = Column(DateTime, nullable=False, index=True,
