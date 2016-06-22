@@ -4,8 +4,6 @@ import pytest
 
 from market.server import ParticipantProtocol, DatastreamProtocol
 
-# TODO check malicious/bad communication
-
 
 async def send(writer, msg):
     writer.write(json.dumps(msg).encode('utf-8') + b'\n')
@@ -96,3 +94,95 @@ async def test_process(event_loop, unused_tcp_port_factory):
     assert answer['type'] == 'trade'
     assert answer['price'] == 149
     assert answer['quantity'] == 20
+
+
+@pytest.mark.asyncio
+async def test_cancel(event_loop, unused_tcp_port):
+    port = unused_tcp_port
+
+    server = await event_loop.create_server(ParticipantProtocol,
+                                            port=port)
+    reader1, writer1 = await asyncio.open_connection(port=port)
+    reader2, writer2 = await asyncio.open_connection(port=port)
+
+    await send(writer1, {
+        'message': 'createOrder',
+        'orderId': 123,
+        'side': 'SELL',
+        'price': 149,
+        'quantity': 20,
+    })
+    answer = await read(reader1)
+    assert answer['report'] == 'NEW'
+
+    await send(writer1, {
+        'message': 'cancelOrder',
+        'orderId': 123,
+    })
+    answer = await read(reader1)
+    assert answer['report'] == 'CANCELED'
+
+    await send(writer2, {
+        'message': 'createOrder',
+        'orderId': 987,
+        'side': 'BUY',
+        'price': 149,
+        'quantity': 120,
+    })
+    answer = await read(reader2)
+    assert answer['report'] == 'NEW'
+
+    # TODO check there's no trade made
+
+
+@pytest.mark.asyncio
+async def test_cancel_bad_id(event_loop, unused_tcp_port):
+    port = unused_tcp_port
+
+    server = await event_loop.create_server(ParticipantProtocol,
+                                            port=port)
+    reader1, writer1 = await asyncio.open_connection(port=port)
+
+    await send(writer1, {
+        'message': 'createOrder',
+        'orderId': 123,
+        'side': 'SELL',
+        'price': 149,
+        'quantity': 20,
+    })
+    answer = await read(reader1)
+    assert answer['report'] == 'NEW'
+
+    await send(writer1, {
+        'message': 'cancelOrder',
+        'orderId': 1234,
+    })
+    answer = await read(reader1)
+    assert 'error' in answer
+
+
+@pytest.mark.asyncio
+async def test_cancel_foreign_id(event_loop, unused_tcp_port):
+    port = unused_tcp_port
+
+    server = await event_loop.create_server(ParticipantProtocol,
+                                            port=port)
+    reader1, writer1 = await asyncio.open_connection(port=port)
+    reader2, writer2 = await asyncio.open_connection(port=port)
+
+    await send(writer1, {
+        'message': 'createOrder',
+        'orderId': 123,
+        'side': 'SELL',
+        'price': 149,
+        'quantity': 20,
+    })
+    answer = await read(reader1)
+    assert answer['report'] == 'NEW'
+
+    await send(writer2, {
+        'message': 'cancelOrder',
+        'orderId': 123,
+    })
+    answer = await read(reader2)
+    assert 'error' in answer

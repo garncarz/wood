@@ -43,9 +43,11 @@ def process(message, participant):
         report = 'NEW'
 
     elif action == 'cancelOrder':
-        if not Order.query.filter_by(id=order_id).count():
+        order_query = Order.query.filter_by(id=order_id,
+                                            participant=participant)
+        if not order_query.count():
             raise MarketException('Order does not exist.')
-        Order.query.filter_by(id=order_id).delete()
+        order_query.delete()
         # FIXME don't delete, just mark
         logger.debug('Order canceled: id=%d' % order_id)
         report = 'CANCELED'
@@ -134,6 +136,8 @@ class ParticipantProtocol(asyncio.Protocol):
         message = json.loads(data.decode('utf-8'))
         logger.debug('Message received: %s' % message)
 
+        order = None
+
         try:
             order, reply = process(message, self.participant)
         except MarketException as e:
@@ -141,7 +145,8 @@ class ParticipantProtocol(asyncio.Protocol):
             reply = {'error': str(e)}
 
         _send(self, reply)
-        _send_datastream_orderbook(order)
+        if order:
+            _send_datastream_orderbook(order)
 
         _make_trades()
 

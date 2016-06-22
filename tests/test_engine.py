@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from functools import partial
 
 from market.database import db_session
@@ -47,5 +48,39 @@ def test_no_sells():
     b(price=145, quantity=200)
     b(price=144, quantity=300)
     db_session.commit()
+
+    assert engine.trade() is False
+
+
+def test_correct_order():
+    now = datetime.now()
+
+    s = partial(factories.Order, side='sell')
+    sell1 = s(price=100, quantity=10, registered_at=now - timedelta(minutes=2))
+    sell2 = s(price=90, quantity=5, registered_at=now - timedelta(minutes=1))
+
+    b = partial(factories.Order, side='buy')
+    buy1 = b(price=110, quantity=5, registered_at=now - timedelta(minutes=2))
+    buy2 = b(price=100, quantity=10, registered_at=now - timedelta(minutes=1))
+
+    db_session.commit()
+
+    trade1 = engine.trade()
+    assert trade1['sell'].id == sell1.id
+    assert trade1['buy'].id == buy1.id
+    assert trade1['price'] == 110
+    assert trade1['quantity'] == 5
+
+    trade2 = engine.trade()
+    # assert trade2['sell'].id == sell1.id  # TODO parent_id?
+    assert trade2['buy'].id == buy2.id
+    assert trade2['price'] == 100
+    assert trade2['quantity'] == 5
+
+    trade3 = engine.trade()
+    assert trade3['sell'].id == sell2.id
+    # TODO assert trade3['buy'].id == buy2.id
+    assert trade3['price'] == 100
+    assert trade3['quantity'] == 5
 
     assert engine.trade() is False
