@@ -24,13 +24,20 @@ class Participant(Base):
     def __repr__(self):
         return '<Participant %d>' % self.id
 
+    def deactivate(self):
+        for order in self.orders:
+            order.active = False
+            db_session.add(order)
+        db_session.commit()
+
 
 class Order(Base):
     __tablename__ = 'order'
 
     id = Column(Integer, primary_key=True)
     code = Column(Integer, nullable=False, index=True)
-    traded = Column(Boolean, default=False, nullable=False, index=True)
+    active = Column(Boolean, default=True, nullable=False, index=True)
+    traded_to_id = Column(Integer, ForeignKey(id), nullable=True)
     side = Column(Enum('buy', 'sell'), nullable=False, index=True)
     price = Column(Numeric, nullable=False, index=True)
     participant_id = Column(Integer, ForeignKey(Participant.id), nullable=True)
@@ -39,6 +46,7 @@ class Order(Base):
                            default=func.now())
 
     participant = relationship('Participant', back_populates='orders')
+    traded_to = relationship('Order', remote_side=[id], post_update=True)
 
     def __repr__(self):
         return '<Order %s/$%d/%d pcs>' % (self.side, self.price, self.quantity)

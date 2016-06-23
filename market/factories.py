@@ -13,6 +13,12 @@ lazy_choice = lambda choices: lazy(lambda: random.choice(choices))
 lazy_randint = lambda min, max: lazy(lambda: random.randint(min, max))
 
 
+class Participant(SQLAlchemyModelFactory):
+    class Meta:
+        model = models.Participant
+        sqlalchemy_session = db_session
+
+
 class Order(SQLAlchemyModelFactory):
     class Meta:
         model = models.Order

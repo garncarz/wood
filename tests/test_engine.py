@@ -100,3 +100,19 @@ def test_decimal():
     assert trade['quantity'] == 100
 
     assert engine.trade() is False
+
+
+def test_deactivated_participant():
+    participant = factories.Participant()
+
+    s = partial(factories.Order, side='sell')
+    s(price=100, quantity=500, participant=participant)
+
+    b = partial(factories.Order, side='buy')
+    b(price=100, quantity=100)
+
+    db_session.commit()
+
+    participant.deactivate()
+
+    assert engine.trade() is False

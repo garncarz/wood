@@ -5,13 +5,13 @@ from .models import Order
 
 
 def trade():
-    buy = Order.query.filter_by(side='buy', traded=False) \
+    buy = Order.query.filter_by(side='buy', active=True) \
             .order_by(Order.registered_at, Order.price.desc()) \
             .first()
     if buy is None:
         return False
 
-    sell = Order.query.filter_by(side='sell', traded=False) \
+    sell = Order.query.filter_by(side='sell', active=True) \
             .filter(Order.price <= buy.price) \
             .order_by(Order.registered_at, Order.price) \
             .first()
@@ -21,8 +21,10 @@ def trade():
     price = buy.price
     quantity = min(buy.quantity, sell.quantity)
 
-    buy.traded = True
-    sell.traded = True
+    buy.active = False
+    sell.active = False
+    buy.traded_to = sell
+    sell.traded_to = buy
     db_session.add_all([buy, sell])
 
     if buy.quantity < sell.quantity:

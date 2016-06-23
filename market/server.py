@@ -152,6 +152,7 @@ class ParticipantProtocol(asyncio.Protocol):
 
     def connection_lost(self, exc):
         logger.debug('Disconnected: %s' % str(self.peername))
+        self.participant.deactivate()
         del participants[self.participant.id]
 
 
