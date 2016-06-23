@@ -188,4 +188,48 @@ async def test_cancel_foreign_id(event_loop, unused_tcp_port):
     assert 'error' in answer
 
 
-# TODO test cancelling partly traded order
+@pytest.mark.asyncio
+async def test_cancel_partly_traded(event_loop, unused_tcp_port):
+    port = unused_tcp_port
+    server = await event_loop.create_server(ParticipantProtocol,
+                                            port=port)
+    reader1, writer1 = await asyncio.open_connection(port=port)
+    reader2, writer2 = await asyncio.open_connection(port=port)
+
+    await send(writer1, {
+        'message': 'createOrder',
+        'orderId': 123,
+        'side': 'SELL',
+        'price': 149,
+        'quantity': 20,
+    })
+    answer = await read(reader1)
+    assert answer['report'] == 'NEW'
+
+    await send(writer2, {
+        'message': 'createOrder',
+        'orderId': 987,
+        'side': 'BUY',
+        'price': 149,
+        'quantity': 120,
+    })
+    answer = await read(reader2)
+    assert answer['report'] == 'NEW'
+
+    answer = await read(reader2)
+    assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 20
+    answer = await read(reader1)
+    assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 20
+
+    await send(writer2, {
+        'message': 'cancelOrder',
+        'orderId': 987,
+    })
+    answer = await read(reader2)
+    assert answer['report'] == 'CANCELED'
+
+    # TODO try to make some trade

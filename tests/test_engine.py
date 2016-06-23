@@ -20,6 +20,7 @@ def test_match():
     trade1 = engine.trade()
     assert trade1['price'] == 145
     assert trade1['quantity'] == 100
+    assert trade1['buy'].traded_to == trade1['sell']
 
     trade2 = engine.trade()
     assert trade2['price'] == 145
@@ -58,10 +59,12 @@ def test_correct_order():
     s = partial(factories.Order, side='sell')
     sell1 = s(price=100, quantity=10, registered_at=now - timedelta(minutes=2))
     sell2 = s(price=90, quantity=5, registered_at=now - timedelta(minutes=1))
+    sell3 = s(price=80, quantity=5, registered_at=now - timedelta(minutes=1))
 
     b = partial(factories.Order, side='buy')
     buy1 = b(price=110, quantity=5, registered_at=now - timedelta(minutes=2))
     buy2 = b(price=100, quantity=10, registered_at=now - timedelta(minutes=1))
+    buy3 = b(price=120, quantity=10, registered_at=now - timedelta(minutes=1))
 
     db_session.commit()
 
@@ -73,15 +76,21 @@ def test_correct_order():
 
     trade2 = engine.trade()
     assert trade2['sell'].code == sell1.code
-    assert trade2['buy'].code == buy2.code
-    assert trade2['price'] == 100
+    assert trade2['buy'].code == buy3.code
+    assert trade2['price'] == 120
     assert trade2['quantity'] == 5
 
     trade3 = engine.trade()
-    assert trade3['sell'].code == sell2.code
-    assert trade3['buy'].code == buy2.code
-    assert trade3['price'] == 100
+    assert trade3['sell'].code == sell3.code
+    assert trade3['buy'].code == buy3.code
+    assert trade3['price'] == 120
     assert trade3['quantity'] == 5
+
+    trade4 = engine.trade()
+    assert trade4['sell'].code == sell2.code
+    assert trade4['buy'].code == buy2.code
+    assert trade4['price'] == 100
+    assert trade4['quantity'] == 5
 
     assert engine.trade() is False
 
