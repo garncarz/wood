@@ -44,11 +44,12 @@ def process(message, participant):
 
     elif action == 'cancelOrder':
         order_query = Order.query.filter_by(code=order_code,
+                                            active=True,
                                             participant=participant)
         if not order_query.count():
             raise MarketException('Order does not exist.')
-        order_query.delete()
-        # FIXME don't delete, just mark
+        order_query.update({Order.active: False})
+        db_session.commit()
         logger.debug('Order canceled: id=%d' % order_code)
         report = 'CANCELED'
 
