@@ -1,5 +1,8 @@
 import pytest
 
+from market import settings
+settings.DB_URL = 'sqlite:///:memory:'
+
 from market import models
 
 
