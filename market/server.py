@@ -69,6 +69,9 @@ watchers = []
 
 
 def _send(client, msg):
+    client.outcoming_seq_id += 1
+    msg['seqId'] = client.outcoming_seq_id
+
     client.transport.write(json.dumps(msg).encode('utf-8') + b'\n')
     logger.debug('Message sent: %s' % msg)
 
@@ -133,13 +136,21 @@ class ParticipantProtocol(asyncio.Protocol):
 
         participants[self.participant.id] = self
 
+        self.incoming_seq_id = 0
+        self.outcoming_seq_id = 0
+
     def data_received(self, data):
         message = json.loads(data.decode('utf-8'))
         logger.debug('Message received: %s' % message)
+        self.incoming_seq_id += 1
 
         order = None
 
         try:
+            if 'seqId' in message:
+                if not message['seqId'] == self.incoming_seq_id:
+                    raise MarketException('Bad seq id, expected %d'
+                                          % self.incoming_seq_id)
             order, reply = process(message, self.participant)
         except MarketException as e:
             logger.warning('Bad input: %s' % e)
@@ -165,6 +176,8 @@ class DatastreamProtocol(asyncio.Protocol):
         logger.debug('Connected (watcher): %s' % str(self.peername))
 
         watchers.append(self)
+
+        self.outcoming_seq_id = 0
 
     def connection_lost(self, exc):
         logger.debug('Disconnected (watcher): %s' % str(self.peername))

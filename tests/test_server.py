@@ -43,6 +43,7 @@ async def test_process(event_loop, unused_tcp_port_factory):
         'side': 'ask',
         'price': 149,
         'quantity': 20,
+        'seqId': 1,
     }
 
     await send(writer1, {
@@ -233,3 +234,22 @@ async def test_cancel_partly_traded(event_loop, unused_tcp_port):
     assert answer['report'] == 'CANCELED'
 
     # TODO try to make some trade
+
+
+@pytest.mark.asyncio
+async def test_bad_seq_id(event_loop, unused_tcp_port):
+    port = unused_tcp_port
+    server = await event_loop.create_server(ParticipantProtocol,
+                                            port=port)
+    reader1, writer1 = await asyncio.open_connection(port=port)
+
+    await send(writer1, {
+        'message': 'createOrder',
+        'orderId': 123,
+        'side': 'SELL',
+        'price': 149,
+        'quantity': 20,
+        'seqId': 2,
+    })
+    answer = await read(reader1)
+    assert answer['error'] == 'Bad seq id, expected 1'
