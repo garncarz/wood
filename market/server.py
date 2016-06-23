@@ -40,7 +40,7 @@ def process(message, participant):
             db_session.commit()
         except KeyError:
             raise MarketException('Unsufficient data.')
-        logger.debug('Order created: %s' % order)
+        logger.info('Order created: %s' % order)
         report = 'NEW'
 
     elif action == 'cancelOrder':
@@ -106,16 +106,22 @@ def _make_trades():
     while trade:
         logger.info('Trade: %s' % trade)
 
-        inform_participant = lambda side: _send(
-            participants[trade[side].participant.id],
-            {
-                'message': 'executionReport',
-                'orderId': trade[side].id,
-                'report': 'FILL',
-                'price': trade['price'],
-                'quantity': trade['quantity'],
-            },
-        )
+        def inform_participant(side):
+            pid = trade[side].participant.id
+            if not pid in participants:
+                logger.warning('%s is already disconnected'
+                               % trade[side].participant)
+                return
+
+            _send(participants[pid],
+                  {
+                    'message': 'executionReport',
+                    'orderId': trade[side].id,
+                    'report': 'FILL',
+                    'price': trade['price'],
+                    'quantity': trade['quantity'],
+                  },
+            )
         inform_participant('buy')
         inform_participant('sell')
 
