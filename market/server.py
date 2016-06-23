@@ -106,12 +106,12 @@ def _make_trades():
     while trade:
         logger.info('Trade: %s' % trade)
 
-        def inform_participant(side):
+        for side in ['buy', 'sell']:
             pid = trade[side].participant.id
             if not pid in participants:
                 logger.warning('%s is already disconnected'
                                % trade[side].participant)
-                return
+                continue
 
             _send(participants[pid],
                   {
@@ -122,8 +122,6 @@ def _make_trades():
                     'quantity': trade['quantity'],
                   },
             )
-        inform_participant('buy')
-        inform_participant('sell')
 
         _send_datastream_trade(trade)
 
