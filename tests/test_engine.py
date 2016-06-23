@@ -125,3 +125,35 @@ def test_deactivated_participant():
     participant.deactivate()
 
     assert engine.trade() is False
+
+
+def test_market_order_sell():
+    test_models.test_table()
+    factories.Order(side='market_sell', quantity=170, price=None)
+    db_session.commit()
+
+    trade1 = engine.trade()
+    assert trade1['quantity'] == 100
+    assert trade1['price'] == 145
+
+    trade2 = engine.trade()
+    assert trade2['quantity'] == 70
+    assert trade2['price'] == 145
+
+    assert engine.trade() is False
+
+
+def test_market_order_buy():
+    test_models.test_table()
+    factories.Order(side='market_buy', quantity=602, price=None)
+    db_session.commit()
+
+    trade1 = engine.trade()
+    assert trade1['quantity'] == 500
+    assert trade1['price'] == 149
+
+    trade2 = engine.trade()
+    assert trade2['quantity'] == 102
+    assert trade2['price'] == 151
+
+    assert engine.trade() is False

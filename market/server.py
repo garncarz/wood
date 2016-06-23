@@ -32,9 +32,10 @@ def process(message, participant):
                 code=order_code,
                 participant=participant,
                 side=message['side'].lower(),
-                price=message['price'],
                 quantity=message['quantity'],
             )
+            if order.side in ['buy', 'sell']:
+                order.price = message['price']
             db_session.add(order)
             db_session.commit()
         except KeyError:

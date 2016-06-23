@@ -253,3 +253,40 @@ async def test_bad_seq_id(event_loop, unused_tcp_port):
     })
     answer = await read(reader1)
     assert answer['error'] == 'Bad seq id, expected 1'
+
+
+@pytest.mark.asyncio
+async def test_market_buy(event_loop, unused_tcp_port):
+    port = unused_tcp_port
+    server = await event_loop.create_server(ParticipantProtocol,
+                                            port=port)
+    reader1, writer1 = await asyncio.open_connection(port=port)
+    reader2, writer2 = await asyncio.open_connection(port=port)
+
+    await send(writer1, {
+        'message': 'createOrder',
+        'orderId': 123,
+        'side': 'SELL',
+        'price': 149,
+        'quantity': 20,
+    })
+    answer = await read(reader1)
+    assert answer['report'] == 'NEW'
+
+    await send(writer2, {
+        'message': 'createOrder',
+        'orderId': 987,
+        'side': 'MARKET_BUY',
+        'quantity': 120,
+    })
+    answer = await read(reader2)
+    assert answer['report'] == 'NEW'
+
+    answer = await read(reader2)
+    assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 20
+    answer = await read(reader1)
+    assert answer['report'] == 'FILL'
+    assert answer['price'] == 149
+    assert answer['quantity'] == 20

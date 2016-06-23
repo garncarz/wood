@@ -38,8 +38,9 @@ class Order(Base):
     code = Column(Integer, nullable=False, index=True)
     active = Column(Boolean, default=True, nullable=False, index=True)
     traded_to_id = Column(Integer, ForeignKey(id), nullable=True)
-    side = Column(Enum('buy', 'sell'), nullable=False, index=True)
-    price = Column(Numeric, nullable=False, index=True)
+    side = Column(Enum('buy', 'sell', 'market_buy', 'market_sell'),
+                  nullable=False, index=True)
+    price = Column(Numeric, nullable=True, index=True)
     participant_id = Column(Integer, ForeignKey(Participant.id), nullable=True)
     quantity = Column(Integer, nullable=False)
     registered_at = Column(DateTime, nullable=False, index=True,
@@ -49,7 +50,11 @@ class Order(Base):
     traded_to = relationship('Order', remote_side=[id], post_update=True)
 
     def __repr__(self):
-        return '<Order %s/$%d/%d pcs>' % (self.side, self.price, self.quantity)
+        if self.side in ['buy', 'sell']:
+            fmt = '<Order %(side)s/$%(price)d/%(quantity)d pcs>'
+        else:
+            fmt = '<Order %(side)s/%(quantity)d pcs>'
+        return fmt % self.__dict__
 
     @property
     def side_datastream(self):
