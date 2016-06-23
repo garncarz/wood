@@ -27,6 +27,7 @@ def trade():
 
     if buy.quantity < sell.quantity:
         sell2 = Order(side='sell',
+                      code=sell.code,
                       participant=sell.participant,
                       price=sell.price,
                       quantity=sell.quantity - buy.quantity,
@@ -35,6 +36,7 @@ def trade():
 
     elif sell.quantity < buy.quantity:
         buy2 = Order(side='buy',
+                     code=buy.code,
                      participant=buy.participant,
                      price=buy.price,
                      quantity=buy.quantity - sell.quantity,

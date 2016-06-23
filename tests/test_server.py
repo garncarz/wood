@@ -186,3 +186,6 @@ async def test_cancel_foreign_id(event_loop, unused_tcp_port):
     })
     answer = await read(reader2)
     assert 'error' in answer
+
+
+# TODO test cancelling partly traded order

@@ -20,16 +20,16 @@ def process(message, participant):
 
     try:
         action = message['message']
-        order_id = int(message['orderId'])
+        order_code = message['orderId']
     except KeyError:
         raise MarketException('Unsufficient data.')
 
     if action == 'createOrder':
-        if Order.query.filter_by(id=order_id).count():
+        if Order.query.filter_by(code=order_code).count():
             raise MarketException('Order already exists.')
         try:
             order = Order(
-                id=order_id,  # FIXME can't be id when it's cloned
+                code=order_code,
                 participant=participant,
                 side=message['side'].lower(),
                 price=message['price'],
@@ -43,13 +43,13 @@ def process(message, participant):
         report = 'NEW'
 
     elif action == 'cancelOrder':
-        order_query = Order.query.filter_by(id=order_id,
+        order_query = Order.query.filter_by(code=order_code,
                                             participant=participant)
         if not order_query.count():
             raise MarketException('Order does not exist.')
         order_query.delete()
         # FIXME don't delete, just mark
-        logger.debug('Order canceled: id=%d' % order_id)
+        logger.debug('Order canceled: id=%d' % order_code)
         report = 'CANCELED'
 
     else:
@@ -58,7 +58,7 @@ def process(message, participant):
 
     return order, {
         'message': 'executionReport',
-        'orderId': order_id,
+        'orderId': order_code,
         'report': report,
     }
 

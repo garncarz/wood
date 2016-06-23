@@ -29,6 +29,7 @@ class Order(Base):
     __tablename__ = 'order'
 
     id = Column(Integer, primary_key=True)
+    code = Column(Integer, nullable=False, index=True)
     traded = Column(Boolean, default=False, nullable=False, index=True)
     side = Column(Enum('buy', 'sell'), nullable=False, index=True)
     price = Column(Numeric, nullable=False, index=True)

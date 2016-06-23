@@ -1,6 +1,6 @@
 import random
 
-from factory import lazy_attribute
+from factory import lazy_attribute, Sequence
 from factory.alchemy import SQLAlchemyModelFactory
 
 from .database import db_session
@@ -18,6 +18,7 @@ class Order(SQLAlchemyModelFactory):
         model = models.Order
         sqlalchemy_session = db_session
 
+    code = Sequence(lambda n: n)
     side = lazy_choice(['ask', 'bid'])
     price = lazy_randint(1, 1000)
     quantity = lazy_randint(1, 1000)
