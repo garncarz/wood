@@ -38,3 +38,4 @@ Generated documentation is located then under the `doc/_build/html` directory.
 ## Testing
 
 Run `./test.sh`.
+Test coverage is located under the `htmlcov` directory then.
