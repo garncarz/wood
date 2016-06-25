@@ -13,6 +13,8 @@ logger = logging.getLogger(__name__)
 
 
 class Participant(Base):
+    """Active participant, making bids/asks, trading."""
+
     __tablename__ = 'participant'
 
     id = Column(Integer, primary_key=True)

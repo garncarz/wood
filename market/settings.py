@@ -3,15 +3,16 @@ import os
 
 import raven
 
-
+#: Base directory of the project.
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-#: DB connection
+#: DB connection.
 DB_URL = 'sqlite:///:memory:'
 
-
+#: Sentry URL. If not `None`, logging to specified Sentry.
 SENTRY_DSN = None
 
+#: Logging dict configuration.
 LOGGING = lambda: {
     'version': 1,
     'disable_existing_loggers': True,

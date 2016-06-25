@@ -65,11 +65,20 @@ def process(message, participant):
     }
 
 
+#: Active clients (mapping models.Participant.id -> ParticipantProtocol).
 participants = {}
+
+#: Watching clients (list of DatastreamProtocol instances).
 watchers = []
 
 
 def _send(client, msg):
+    """Sends a message to the client.
+
+    :param asyncio.Protocol client: Client containing `.transport`.
+    :param dict msg: Message to be JSONified.
+    """
+
     client.outcoming_seq_id += 1
     msg['seqId'] = client.outcoming_seq_id
 
@@ -78,6 +87,11 @@ def _send(client, msg):
 
 
 def _send_datastream_orderbook(order):
+    """Informs watchers about a new order (anonymously).
+
+    :param models.Order order: A new order.
+    """
+
     msg = {
         'type': 'orderbook',
         'side': order.side_datastream,
@@ -90,6 +104,11 @@ def _send_datastream_orderbook(order):
 
 
 def _send_datastream_trade(trade):
+    """Informs watchers about a new trade (anonymously).
+
+    :param dict trade: Trade (as returned from the engine).
+    """
+
     msg = {
         'type': 'trade',
         'time': trade['time'].timestamp(),
@@ -102,6 +121,10 @@ def _send_datastream_trade(trade):
 
 
 def _make_trades():
+    """As long as new trades can be make, make them
+    and inform both participants and watchers.
+    """
+
     trade = engine.trade()
     while trade:
         logger.info('Trade: %s' % trade)
@@ -129,6 +152,8 @@ def _make_trades():
 
 
 class ParticipantProtocol(asyncio.Protocol):
+    """Protocol for active clients, those making bids/asks.
+    """
 
     def connection_made(self, transport):
         self.transport = transport
@@ -174,6 +199,8 @@ class ParticipantProtocol(asyncio.Protocol):
 
 
 class DatastreamProtocol(asyncio.Protocol):
+    """Protocol for anonymous watchers.
+    """
 
     def connection_made(self, transport):
         self.transport = transport
@@ -190,6 +217,13 @@ class DatastreamProtocol(asyncio.Protocol):
 
 
 def run(host, port, port_datastream):
+    """Runs both active & watcher services. Runs until Ctrl+C.
+
+    :param str host: Listen as (e.g. `localhost`).
+    :param int port: Listening port for active clients.
+    :param int port_datatream: Listening port for watchers.
+    """
+
     loop = asyncio.get_event_loop()
 
     coro = loop.create_server(ParticipantProtocol, host, port)

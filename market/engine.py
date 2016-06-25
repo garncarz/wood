@@ -5,6 +5,11 @@ from .models import Order
 
 
 def _market_buy():
+    """Try to find a MARKET buy trade.
+
+    :returns: (buy, sell, price) or `False`
+    """
+
     buy = Order.query.filter_by(side='market_buy', active=True) \
             .order_by(Order.registered_at) \
             .first()
@@ -21,6 +26,11 @@ def _market_buy():
 
 
 def _market_sell():
+    """Try to find a MARKET sell trade.
+
+    :returns: (buy, sell, price) or `False`
+    """
+
     sell = Order.query.filter_by(side='market_sell', active=True) \
             .order_by(Order.registered_at) \
             .first()
@@ -38,6 +48,11 @@ def _market_sell():
 
 
 def _standard_trade():
+    """Try to find a strandard trade.
+
+    :returns: (buy, sell, price) or `False`
+    """
+
     buy = Order.query.filter_by(side='buy', active=True) \
             .order_by(Order.registered_at, Order.price.desc()) \
             .first()
@@ -55,6 +70,28 @@ def _standard_trade():
 
 
 def trade():
+    """Try to make a trade.
+
+    Order of possible trades:
+        1. MARKET buy
+        2. MARKET sell
+        3. standard trades
+
+    Partly traded Orders are forked, a forked copy contains the remaining
+    quantity.
+
+    :returns: Information about a trade if one was made (`False` otherwise):
+    .. code-block:: python
+
+        {
+            'price': <price>,
+            'quantity': <quantity>,
+            'time': now(),
+            'buy': <buying Order>,
+            'sell': <selling Order>,
+        }
+    """
+
     for search in [_market_buy, _market_sell, _standard_trade]:
         found = search()
         if found:
