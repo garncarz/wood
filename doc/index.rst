@@ -39,6 +39,12 @@ Settings
 Tests
 -----
 
+.. automodule:: tests.test_models
+   :members:
+
+.. automodule:: tests.test_engine
+   :members:
+
 .. automodule:: tests.test_server
    :members:
 

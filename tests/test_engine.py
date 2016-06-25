@@ -9,10 +9,13 @@ import test_models
 
 
 def test_empty():
+    """Test engine when there are no orders."""
     assert engine.trade() is False
 
 
 def test_match():
+    """Test basic matching."""
+
     test_models.test_table()
     factories.Order(side='sell', quantity=350, price=144)
     db_session.commit()
@@ -34,6 +37,8 @@ def test_match():
 
 
 def test_no_buys():
+    """Test a case when there are no buying orders."""
+
     s = partial(factories.Order, side='sell')
     s(price=149, quantity=500)
     s(price=151, quantity=1000)
@@ -44,6 +49,8 @@ def test_no_buys():
 
 
 def test_no_sells():
+    """Test a case when there are no selling orders."""
+
     b = partial(factories.Order, side='buy')
     b(price=145, quantity=100)
     b(price=145, quantity=200)
@@ -54,6 +61,8 @@ def test_no_sells():
 
 
 def test_correct_order():
+    """Tests correct matching by both a creation time and a price."""
+
     now = datetime.now()
 
     s = partial(factories.Order, side='sell')
@@ -96,6 +105,8 @@ def test_correct_order():
 
 
 def test_decimal():
+    """Tests working with Decimals."""
+
     s = partial(factories.Order, side='sell')
     s(price=100.5, quantity=500)
 
@@ -112,6 +123,8 @@ def test_decimal():
 
 
 def test_deactivated_participant():
+    """Tests that orders from a deactivated participant are not tradeable."""
+
     participant = factories.Participant()
 
     s = partial(factories.Order, side='sell')
@@ -128,6 +141,8 @@ def test_deactivated_participant():
 
 
 def test_market_order_sell():
+    """Tests matching MARKER sell orders."""
+
     test_models.test_table()
     factories.Order(side='market_sell', quantity=170, price=None)
     db_session.commit()
@@ -144,6 +159,8 @@ def test_market_order_sell():
 
 
 def test_market_order_buy():
+    """Tests matching MARKER buy orders."""
+
     test_models.test_table()
     factories.Order(side='market_buy', quantity=602, price=None)
     db_session.commit()

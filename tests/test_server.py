@@ -101,6 +101,8 @@ async def test_process(event_loop, unused_tcp_port_factory):
 
 @pytest.mark.asyncio
 async def test_cancel(event_loop, unused_tcp_port):
+    """Tests cancelling an order."""
+
     port = unused_tcp_port
 
     server = await event_loop.create_server(ParticipantProtocol,
@@ -140,8 +142,9 @@ async def test_cancel(event_loop, unused_tcp_port):
 
 @pytest.mark.asyncio
 async def test_cancel_bad_id(event_loop, unused_tcp_port):
-    port = unused_tcp_port
+    """Tests canceling an order with an invalid id (error)."""
 
+    port = unused_tcp_port
     server = await event_loop.create_server(ParticipantProtocol,
                                             port=port)
     reader1, writer1 = await asyncio.open_connection(port=port)
@@ -166,8 +169,9 @@ async def test_cancel_bad_id(event_loop, unused_tcp_port):
 
 @pytest.mark.asyncio
 async def test_cancel_foreign_id(event_loop, unused_tcp_port):
-    port = unused_tcp_port
+    """Tests attempt to cancel a foreign order (error)."""
 
+    port = unused_tcp_port
     server = await event_loop.create_server(ParticipantProtocol,
                                             port=port)
     reader1, writer1 = await asyncio.open_connection(port=port)
@@ -193,6 +197,10 @@ async def test_cancel_foreign_id(event_loop, unused_tcp_port):
 
 @pytest.mark.asyncio
 async def test_cancel_partly_traded(event_loop, unused_tcp_port):
+    """Tests cancelling a partly traded order.
+    (Internally it's a new Order object.)
+    """
+
     port = unused_tcp_port
     server = await event_loop.create_server(ParticipantProtocol,
                                             port=port)
@@ -240,6 +248,8 @@ async def test_cancel_partly_traded(event_loop, unused_tcp_port):
 
 @pytest.mark.asyncio
 async def test_bad_seq_id(event_loop, unused_tcp_port):
+    """Test bad communication (sequential ids)."""
+
     port = unused_tcp_port
     server = await event_loop.create_server(ParticipantProtocol,
                                             port=port)
@@ -259,6 +269,8 @@ async def test_bad_seq_id(event_loop, unused_tcp_port):
 
 @pytest.mark.asyncio
 async def test_market_buy(event_loop, unused_tcp_port):
+    """Tests matching a MARKET buy order."""
+
     port = unused_tcp_port
     server = await event_loop.create_server(ParticipantProtocol,
                                             port=port)

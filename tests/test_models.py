@@ -5,6 +5,8 @@ from market import models, factories
 
 
 def test_table():
+    """Tests filling a table with orders."""
+
     b = partial(factories.Order, side='buy')
     b(price=145, quantity=100)
     b(price=145, quantity=200)
