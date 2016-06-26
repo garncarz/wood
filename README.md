@@ -1,7 +1,8 @@
 # StockMarketServer
 
 This is an implementation of a simple one-stock market server,
-as specified at [codingchallenge.wood.cz](http://codingchallenge.wood.cz/).
+as specified at [codingchallenge.wood.cz](http://codingchallenge.wood.cz/)
+(backed up in the `wood` directory).
 
 Implemented extra features:
 

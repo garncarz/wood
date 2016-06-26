@@ -200,6 +200,10 @@ class ParticipantProtocol(asyncio.Protocol):
 
 class DatastreamProtocol(asyncio.Protocol):
     """Protocol for anonymous watchers.
+
+    .. todo::
+        What about cancelling orders? Should watchers be informed?
+        What's the format?
     """
 
     def connection_made(self, transport):

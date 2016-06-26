@@ -2,6 +2,7 @@ import asyncio
 import json
 import pytest
 
+from market import models
 from market.server import ParticipantProtocol, DatastreamProtocol
 
 
@@ -12,6 +13,12 @@ async def send(writer, msg):
 
 async def read(reader):
     return json.loads((await reader.readline()).decode('utf-8'))
+
+
+def trades_count():
+    return models.Order.query.filter(
+              models.Order.traded_to != None
+           ).count() / 2
 
 
 @pytest.mark.asyncio
@@ -98,6 +105,8 @@ async def test_process(event_loop, unused_tcp_port_factory):
     assert answer['price'] == 149
     assert answer['quantity'] == 20
 
+    assert trades_count() == 2
+
 
 @pytest.mark.asyncio
 async def test_cancel(event_loop, unused_tcp_port):
@@ -137,7 +146,7 @@ async def test_cancel(event_loop, unused_tcp_port):
     answer = await read(reader2)
     assert answer['report'] == 'NEW'
 
-    # TODO check there's no trade made
+    assert trades_count() == 0
 
 
 @pytest.mark.asyncio
@@ -236,6 +245,8 @@ async def test_cancel_partly_traded(event_loop, unused_tcp_port):
     assert answer['price'] == 149
     assert answer['quantity'] == 20
 
+    assert trades_count() == 1
+
     await send(writer2, {
         'message': 'cancelOrder',
         'orderId': 987,
@@ -243,7 +254,17 @@ async def test_cancel_partly_traded(event_loop, unused_tcp_port):
     answer = await read(reader2)
     assert answer['report'] == 'CANCELED'
 
-    # TODO try to make some trade
+    await send(writer1, {
+        'message': 'createOrder',
+        'orderId': 567,
+        'side': 'SELL',
+        'price': 100,
+        'quantity': 30,
+    })
+    answer = await read(reader1)
+    assert answer['report'] == 'NEW'
+
+    assert trades_count() == 1
 
 
 @pytest.mark.asyncio
@@ -304,3 +325,5 @@ async def test_market_buy(event_loop, unused_tcp_port):
     assert answer['report'] == 'FILL'
     assert answer['price'] == 149
     assert answer['quantity'] == 20
+
+    assert trades_count() == 1
