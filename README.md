@@ -15,7 +15,7 @@ Implemented extra features:
 Logging to [Sentry](https://getsentry.com) is supported.
 
 
-## Instalation
+## Installation
 
 Needed: Python 3.5
 
