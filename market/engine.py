@@ -17,7 +17,7 @@ def _market_buy():
         return False
 
     sell = Order.query.filter_by(side='sell', active=True) \
-            .order_by(Order.registered_at, Order.price) \
+            .order_by(Order.price, Order.registered_at) \
             .first()
     if sell is None:
         return False
@@ -39,7 +39,7 @@ def _market_sell():
 
     # TODO what price is the best?
     buy = Order.query.filter_by(side='buy', active=True) \
-            .order_by(Order.registered_at, Order.price.desc()) \
+            .order_by(Order.price.desc(), Order.registered_at) \
             .first()
     if buy is None:
         return False
@@ -54,14 +54,14 @@ def _standard_trade():
     """
 
     buy = Order.query.filter_by(side='buy', active=True) \
-            .order_by(Order.registered_at, Order.price.desc()) \
+            .order_by(Order.price.desc(), Order.registered_at) \
             .first()
     if buy is None:
         return False
 
     sell = Order.query.filter_by(side='sell', active=True) \
             .filter(Order.price <= buy.price) \
-            .order_by(Order.registered_at, Order.price) \
+            .order_by(Order.price, Order.registered_at) \
             .first()
     if sell is None:
         return False

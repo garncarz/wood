@@ -78,25 +78,25 @@ def test_correct_order():
     db_session.commit()
 
     trade1 = engine.trade()
-    assert trade1['sell'].code == sell1.code
-    assert trade1['buy'].code == buy1.code
-    assert trade1['price'] == 110
+    assert trade1['sell'].code == sell3.code
+    assert trade1['buy'].code == buy3.code
+    assert trade1['price'] == 120
     assert trade1['quantity'] == 5
 
     trade2 = engine.trade()
-    assert trade2['sell'].code == sell1.code
+    assert trade2['sell'].code == sell2.code
     assert trade2['buy'].code == buy3.code
     assert trade2['price'] == 120
     assert trade2['quantity'] == 5
 
     trade3 = engine.trade()
-    assert trade3['sell'].code == sell3.code
-    assert trade3['buy'].code == buy3.code
-    assert trade3['price'] == 120
+    assert trade3['sell'].code == sell1.code
+    assert trade3['buy'].code == buy1.code
+    assert trade3['price'] == 110
     assert trade3['quantity'] == 5
 
     trade4 = engine.trade()
-    assert trade4['sell'].code == sell2.code
+    assert trade4['sell'].code == sell1.code
     assert trade4['buy'].code == buy2.code
     assert trade4['price'] == 100
     assert trade4['quantity'] == 5
