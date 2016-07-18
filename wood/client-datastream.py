@@ -61,9 +61,9 @@ class MarketModel:
 
 	def __repr__(self) -> str:
 		lines = (
-			['BID'] + [ '{:d} @ {:d}'.format(qty, price) for (price, qty) in reversed(sorted(self._bid.items())) if qty ] +
-			['ASK'] + [ '{:d} @ {:d}'.format(qty, price) for (price, qty) in sorted(self._ask.items()) if qty ] +
-			['TRADES'] + [ '{time:%Y-%m-%d %H:%M:%S.%s} - {quantity:d} @ {price:d}'.format(**trade) for trade in self._trades ]
+			['BID'] + [ '{:d} @ {:f}'.format(qty, price) for (price, qty) in reversed(sorted(self._bid.items())) if qty ] +
+			['ASK'] + [ '{:d} @ {:f}'.format(qty, price) for (price, qty) in sorted(self._ask.items()) if qty ] +
+			['TRADES'] + [ '{time:%Y-%m-%d %H:%M:%S.%s} - {quantity:d} @ {price:f}'.format(**trade) for trade in self._trades ]
 		)
 		return '\n'.join(lines)
 
