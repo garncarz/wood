@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/garncarz/wood.svg?branch=master)](https://travis-ci.org/garncarz/wood)
 [![Coverage Status](https://coveralls.io/repos/github/garncarz/wood/badge.svg?branch=master)](https://coveralls.io/github/garncarz/wood?branch=master)
+[![Documentation Status](https://readthedocs.org/projects/wood-challenge/badge/?version=latest)](http://wood-challenge.readthedocs.io/en/latest/?badge=latest)
 
 This is an implementation of a simple one-stock market server,
 as specified at [codingchallenge.wood.cz](http://codingchallenge.wood.cz/)
