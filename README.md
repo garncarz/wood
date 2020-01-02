@@ -44,3 +44,6 @@ Generated documentation is located then under the `doc/_build/html` directory.
 
 Run `./test.sh`.
 Test coverage is located under the `htmlcov` directory then.
+
+
+<!-- ❄️ Hello to the GitHub Archive! ❄️ -->
